@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="dashboard_template" name="MQTT Dashboard">
+    <t t-call="website.layout">
+      <div class="container">
+        <h1>MQTT Dashboard</h1>
+        <p>Valor actual del sensor:</p>
+        <h2 id="mqtt-value" style="color: green;">--</h2>
+
+        <hr/>
+
+        <h3>Histórico de cloro</h3>
+        <canvas id="chlorineChart" width="400" height="200"></canvas>
+      </div>
+
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        // Placeholder MQTT update
+        setInterval(() => {
+          document.getElementById('mqtt-value').textContent = (Math.random() * 100).toFixed(2) + ' ppm';
+        }, 2000);
+
+        // Placeholder chart
+        const ctx = document.getElementById('chlorineChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: ['12:00', '12:05', '12:10', '12:15'],
+            datasets: [{
+              label: 'Cloro (ppm)',
+              data: [0.5, 0.7, 0.6, 0.9],
+              borderWidth: 2
+            }]
+          },
+          options: {
+            responsive: true
+          }
+        });
+      </script>
+    </t>
+  </template>
+</odoo>
