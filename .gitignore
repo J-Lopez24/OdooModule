@@ -1,0 +1,32 @@
+# Volums i dades de Docker
+**/odoo_data/
+**/db_data/
+
+# Fitxers temporals del sistema
+*.log
+*.tmp
+*.swp
+*.bak
+*.orig
+
+# Python
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+*.egg-info/
+.env
+
+# PyCharm / JetBrains
+.idea/
+*.iml
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Mac
+.DS_Store
+
+# Altres
+.vscode/
