@@ -14,29 +14,63 @@
       </div>
 
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script>
-        // Placeholder MQTT update
-        setInterval(() => {
-          document.getElementById('mqtt-value').textContent = (Math.random() * 100).toFixed(2) + ' ppm';
-        }, 2000);
+     <script>
+  let chart = null;
 
-        // Placeholder chart
+  function updateDashboard() {
+    fetch('/mqtt_sensor/data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})  // ← Solución: enviar cuerpo vacío válido
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Actualizar valor MQTT
+      const mqttValue = data.mqtt_value ?? '--';
+      document.getElementById('mqtt-value').textContent = mqttValue + ' ppm';
+
+      // Actualizar gráfico
+      if (chart) {
+        chart.data.labels = data.labels;
+        chart.data.datasets[0].data = data.values;
+        chart.update();
+      } else {
         const ctx = document.getElementById('chlorineChart').getContext('2d');
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
           type: 'line',
           data: {
-            labels: ['12:00', '12:05', '12:10', '12:15'],
+            labels: data.labels,
             datasets: [{
               label: 'Cloro (ppm)',
-              data: [0.5, 0.7, 0.6, 0.9],
-              borderWidth: 2
+              data: data.values,
+              borderColor: 'blue',
+              borderWidth: 2,
+              fill: false
             }]
           },
           options: {
-            responsive: true
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
           }
         });
-      </script>
+      }
+    })
+    .catch(error => {
+      console.error('Error al obtener datos del backend:', error);
+    });
+  }
+
+  // Inicializar y actualizar cada 5s
+  updateDashboard();
+  setInterval(updateDashboard, 5000);
+</script>
+
     </t>
   </template>
 </odoo>

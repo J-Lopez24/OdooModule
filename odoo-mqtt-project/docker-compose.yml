@@ -4,24 +4,24 @@ services:
   db:
     image: postgres:15
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=odoo
-      - POSTGRES_PASSWORD=odoo
+      POSTGRES_DB: postgres
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
     ports:
-     - "5433:5432"
+      - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
   odoo:
-    image: odoo:17
+    build: .  # ← Usamos build en lugar de image
     depends_on:
       - db
     ports:
       - "8069:8069"
     environment:
-      - HOST=db
-      - USER=odoo
-      - PASSWORD=odoo
+      HOST: db
+      USER: odoo
+      PASSWORD: odoo
     volumes:
       - odoo_data:/var/lib/odoo
       - ./custom_addons:/mnt/extra-addons
