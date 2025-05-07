@@ -39,8 +39,8 @@ class ExternalDBService:
                 cursor.execute("""
                     SELECT o.result, o."phenomenonTime"
                     FROM things t
-                    JOIN datastreams d ON t.ID = d."Thing_id"
-                    JOIN observations o ON d.ID = o."Datastream_id"
+                    JOIN datastreams d ON t.ID = d."THING_ID"
+                    JOIN observations o ON d.ID = o."DATASTREAM_ID"
                     WHERE t.ID = %s
                     ORDER BY o."phenomenonTime" DESC
                     LIMIT 10
